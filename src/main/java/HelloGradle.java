@@ -10,5 +10,7 @@ public class HelloGradle {
         System.out.println("Hello, gradle");
         int a = 9;
         System.out.println("a = " + a);
+        Integer n = 3;
+        n++;
     }
 }

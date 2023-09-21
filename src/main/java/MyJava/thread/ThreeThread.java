@@ -29,10 +29,11 @@ public class ThreeThread {
 
 
 class Sell implements Callable {
-    private static volatile Integer tickets = 100;
+    private static volatile int tickets = 100;
+    private static Object lock = new Object();//创建一个Object对象作为锁
     private String name;
 
-    private static int count = 0;//记录卖出的票数
+    private  int count = 0;//记录卖出的票数
 
 
     public Sell(String name) {
@@ -42,10 +43,17 @@ class Sell implements Callable {
     @Override
     public  Object call() throws Exception {
 
-        while (tickets > 0) {
-            count++;
-            System.out.println(name + "售卖了第" + (tickets--) + "张票" + ",还剩" + tickets);
-//            Thread.sleep(1000);
+        while (true) {
+            synchronized (lock){
+                if(tickets > 0){
+                    count++;
+                    System.out.println(name + "售卖了第" + (tickets--) + "张票" + ",还剩" + tickets);
+                }else {
+                    break;
+                }
+            }
+            //模拟其他线程进来
+            Thread.sleep(10);
 
         }
 
